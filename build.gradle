@@ -32,6 +32,11 @@ subprojects {
 			extendsFrom annotationProcessor
 		}
 	}
+
+	ext {
+		springCloudVersion = "2023.0.3"
+	}
+
 	dependencies {
 
 //		implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -43,11 +48,20 @@ subprojects {
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 		if(project.name.contains("service")){
+			implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 			runtimeOnly 'org.postgresql:postgresql'
 			implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 			implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 		}
 	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+		}
+	}
+
+
 
 }
 
