@@ -1,5 +1,6 @@
 package org.example.productservice;
 
+import org.example.common.exception.CustomNotfoundException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

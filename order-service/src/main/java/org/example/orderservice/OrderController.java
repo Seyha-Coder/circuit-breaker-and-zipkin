@@ -1,6 +1,6 @@
 package org.example.orderservice;
 
-import org.example.orderservice.exception.CustomNotfoundException;
+import org.example.common.exception.CustomNotfoundException;
 import org.example.orderservice.feignclient.ProductClient;
 import org.example.orderservice.rest_template.OrderService;
 import org.example.productservice.Product;
@@ -32,7 +32,6 @@ public class OrderController {
         } catch (Exception e) {
             throw new CustomNotfoundException("Product with ID " + orderRequest.getProductId() + " not found");
         }
-
 
         // Calculate the total price
         double totalPrice = product.getPrice() * orderRequest.getQuantity();

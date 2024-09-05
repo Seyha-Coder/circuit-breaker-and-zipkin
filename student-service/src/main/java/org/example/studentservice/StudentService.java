@@ -1,7 +1,7 @@
 package org.example.studentservice;
 
 import org.example.cardservice.Card;
-import org.example.cardservice.exception.CustomNotfoundException;
+import org.example.common.exception.CustomNotfoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,15 @@ public class StudentService {
     @Autowired
     private CardClient cardClient;
 
-    public Student createStudent(Student student) {
+    public StudentResponse createStudent(Student student) {
         // Verify that the Card exists before associating it with the Student
         Card card = cardClient.getCardById(student.getCardId());
         if (card == null) {
             throw new CustomNotfoundException("Card not found");
         }
-
-        return studentRepository.save(student);
+        Student student1= studentRepository.save(student);
+        StudentResponse studentResponse = new StudentResponse(student1, card);
+        return studentResponse;
     }
 
     public Optional<Student> getStudentById(Long id) {

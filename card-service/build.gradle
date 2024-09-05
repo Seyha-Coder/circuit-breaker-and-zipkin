@@ -19,6 +19,7 @@
 
 dependencies {
     implementation project(":product-service")
+    implementation project(":common")
 }
 
 //tasks.named('test') {

@@ -1,4 +1,4 @@
-package org.example.orderservice.exception;
+package org.example.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

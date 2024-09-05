@@ -1,6 +1,6 @@
 package org.example.productservice;
 
-import org.example.productservice.exception.CustomNotfoundException;
+import org.example.common.exception.CustomNotfoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

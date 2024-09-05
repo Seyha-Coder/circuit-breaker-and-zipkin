@@ -1,6 +1,6 @@
 package org.example.cardservice;
 
-import org.example.cardservice.exception.CustomNotfoundException;
+import org.example.common.exception.CustomNotfoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
