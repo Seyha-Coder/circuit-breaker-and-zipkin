@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Database
+  postgres:
+    image: postgres:latest
+    container_name: order-service_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: order-service_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - zipkin-network
+
+  # Zipkin for tracing with PostgreSQL
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - "9411:9411"
+    networks:
+      - zipkin-network
+
+volumes:
+  postgres_data:
+
+networks:
+  zipkin-network:
+    driver: bridge

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: product-service
+    name: order-service
   datasource:
     url: jdbc:postgresql://localhost:5432/order-service_db
     username: postgres
@@ -8,5 +8,68 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
 server:
   port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+resilience4j:
+  circuitbreaker:
+    instances:
+      ProductClientgetProductByIdLong:
+        register-health-indicator: true
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000 # 10 seconds
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        exponential-max-wait-duration-in-open-state: 5s
+        minimum-number-of-calls: 5
+        sliding-window-size: 10
+        event-consumer-buffer-size: 10
+  retry:
+    instances:
+      ProductClientgetProductRetry:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - java.net.SocketTimeoutException
+          - java.io.IOException
+  ratelimiter:
+    instances:
+      ProductClientgetProductRateLimit:
+        limit-for-period: 3
+        limit-refresh-period: 5s
+        timeout-duration: 0s
+  bulkhead:
+    instances:
+      ProductClientgetProductBulkhead:
+        max-concurrent-calls: 3 #can request 3 person in the same time in 1s
+        max-wait-duration: 1s
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,circuitbreakers
+  health:
+    circuitbreakers:
+      enabled: true
+    ratelimiters:
+      enabled: true
+  endpoint:
+    retries:
+      enabled: true
+    bulkheads:
+      enabled: true
+    health:
+      show-details: always
+
